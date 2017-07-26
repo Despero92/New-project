@@ -1,0 +1,28 @@
+1.  SELECT firstname FROM player WHERE firstname LIKE 'а%'
+2.  SELECT firstname FROM `player` WHERE firstname LIKE '%ни%'
+3.  SELECT firstname,lastname FROM `player` WHERE firstname LIKE '%с' OR lastname LIKE '%с'
+4.  SELECT firstname,is_captain FROM `player` WHERE is_captain = 1
+5.  SELECT COUNT(position_id) AS counter FROM `player` WHERE position_id = 2
+6.  SELECT COUNT(player_id) AS player_forwards FROM `player` WHERE team_id = 1 AND position_id = 4
+7.  SELECT * FROM `player` WHERE team_id = 6 AND position_id = 3
+8.  SELECT * FROM `stadium` WHERE opacity > 20000
+9.  SELECT SUM(opacity) AS opacity_summ FROM `stadium`
+10. SELECT name, COUNT(name) FROM stadium GROUP BY city_id
+11. SELECT name, AVG (opacity) FROM stadium GROUP BY name
+12. SELECT name FROM `stadium` WHERE (city_id = 1 or city_id = 3) AND opacity < 25000
+13. SELECT firstname FROM `player` WHERE team_id = 2 ORDER BY firstname ASC
+14. SELECT name, opacity FROM `stadium` ORDER BY opacity DESC
+15. SELECT COUNT(stadium_id) AS stadiums FROM `stadium` WHERE city_id != 1
+
+INNER JOIN
+
+1.  SELECT c.name AS name FROM city c INNER JOIN stadium s ON(c.city_id=s.stadium_id AND s.opacity >20000)
+2.  SELECT s.name AS name FROM stadium s INNER JOIN city c ON (s.stadium_id  =c.city_id AND c.name LIKE '%к%')
+3.  SELECT c.name AS name, COUNT(s.stadium_id)AS counter FROM city c INNER JOIN stadium s ON(c.city_id=s.city_id) GROUP BY s.city_id HAVING counter>1 
+4.  SELECT t.name AS team, COUNT(p.player_id) AS counter FROM team t INNER JOIN player p ON(p.team_id=t.team_id AND p.position_id=4) INNER JOIN stadium s ON(t.city_id=s.city_id AND s.opacity<40000) GROUP BY t.name 
+5.  SELECT p.firstname AS firstname, p.lastname AS lastname FROM player p INNER JOIN team t ON(p.team_id=t.team_id) INNER JOIN city c ON(t.city_id=c.city_id) WHERE (p.position_id=3 AND c.name LIKE '%в%')
+6.  SELECT COUNT(DISTINCT p.player_id) AS playercount, c.name AS name, COUNT(DISTINCT s.stadium_id)AS counter FROM player p INNER JOIN team t ON(t.team_id=p.team_id) INNER JOIN city c ON(c.city_id=t.city_id) INNER JOIN stadium s ON(s.city_id=c.city_id) GROUP BY s.city_id HAVING counter>1 
+7.  SELECT CONCAT_WS(', ', p.firstname, pos.title, t.name, c.name) AS player_info FROM player p INNER JOIN team t ON(p.team_id=t.team_id) INNER JOIN city c ON(t.city_id=c.city_id) INNER JOIN position pos ON(p.position_id=pos.position_id)
+8.  UPDATE position SET title='Форвард' WHERE title='Нападающий'
+9.  UPDATE player SET firstname='Олександр' WHERE firstname='Александр'
+10. SELECT MIN(opacity) AS min_opacity, MAX(opacity) AS max_opacity, AVG(opacity) AS average, COUNT(stadium_id) AS count_stadium, COUNT(city_id) AS city_count FROM `stadium` 
